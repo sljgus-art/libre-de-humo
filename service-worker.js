@@ -5,7 +5,9 @@ const FILES_TO_CACHE = [
     "./index.html",
     "./style.css",
     "./app.js",
-    "./manifest.json"
+    "./manifest.json",
+    "./icon-192.png",
+    "./icon-512.png"
 ];
 
 // Instalación
@@ -35,7 +37,7 @@ self.addEventListener("activate", (event) => {
     self.clients.claim();
 });
 
-// Estrategia Cache First
+// Cache First
 self.addEventListener("fetch", (event) => {
 
     event.respondWith(
@@ -50,23 +52,32 @@ self.addEventListener("fetch", (event) => {
                 return fetch(event.request)
                     .then(networkResponse => {
 
-                        return caches.open(CACHE_NAME)
-                            .then(cache => {
+                        if (
+                            event.request.method === "GET" &&
+                            event.request.url.startsWith(self.location.origin)
+                        ) {
 
-                                cache.put(
-                                    event.request,
-                                    networkResponse.clone()
-                                );
+                            caches.open(CACHE_NAME)
+                                .then(cache => {
+                                    cache.put(
+                                        event.request,
+                                        networkResponse.clone()
+                                    );
+                                });
+                        }
 
-                                return networkResponse;
-                            });
+                        return networkResponse;
                     });
+
             })
             .catch(() => {
 
                 if (event.request.mode === "navigate") {
                     return caches.match("./index.html");
                 }
+
             })
+
     );
+
 });
