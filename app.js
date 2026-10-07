@@ -1,6 +1,6 @@
-// =========================
-// LIBRE DE HUMO APP
-// =========================
+// ======================================
+// LIBRE DE HUMO v2
+// ======================================
 
 const LOGROS = [
     { dias: 1, nombre: "🌱 Primer día" },
@@ -13,37 +13,93 @@ const LOGROS = [
 ];
 
 const HITOS_SALUD = [
-    { dias: 0.01, titulo: "20 minutos", texto: "La frecuencia cardiaca empieza a normalizarse." },
-    { dias: 0.5, titulo: "12 horas", texto: "Disminuye el monóxido de carbono en sangre." },
-    { dias: 2, titulo: "48 horas", texto: "Mejoran el gusto y el olfato." },
-    { dias: 14, titulo: "2 semanas", texto: "Mejora la circulación." },
-    { dias: 90, titulo: "3 meses", texto: "Aumenta la capacidad pulmonar." },
-    { dias: 365, titulo: "1 año", texto: "Disminuye significativamente el riesgo cardiovascular." }
+    {
+        dias: 0.014,
+        titulo: "20 minutos",
+        texto: "La frecuencia cardiaca comienza a normalizarse."
+    },
+    {
+        dias: 0.5,
+        titulo: "12 horas",
+        texto: "Disminuye el monóxido de carbono en sangre."
+    },
+    {
+        dias: 2,
+        titulo: "48 horas",
+        texto: "Mejoran el gusto y el olfato."
+    },
+    {
+        dias: 14,
+        titulo: "2 semanas",
+        texto: "Mejora la circulación."
+    },
+    {
+        dias: 90,
+        titulo: "3 meses",
+        texto: "Aumenta la función pulmonar."
+    },
+    {
+        dias: 365,
+        titulo: "1 año",
+        texto: "Disminuye significativamente el riesgo cardiovascular."
+    }
 ];
 
-// =========================
+const FRASES = [
+    "Cada cigarrillo rechazado es una victoria.",
+    "No necesitas fumar para superar este momento.",
+    "Respira, aguanta unos minutos y sigue adelante.",
+    "Tu salud te agradecerá este esfuerzo.",
+    "Las ganas pasan. Los beneficios permanecen.",
+    "Hoy es un gran día para seguir libre de humo.",
+    "Lo estás haciendo mejor de lo que crees."
+];
+
+// ======================================
 // INICIO
-// =========================
+// ======================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
     comprobarConfiguracion();
 
-    actualizarDashboard();
+    cargarTodo();
 
-    cargarMotivos();
+    mostrarPantalla("inicio");
 
-    cargarDiario();
-
-    cargarLogros();
-
-    cargarSalud();
+    setInterval(() => {
+        actualizarDashboard();
+    }, 1000);
 
 });
 
-// =========================
-// CONFIGURACIÓN
-// =========================
+// ======================================
+// UTILIDADES
+// ======================================
+
+function cargarTodo() {
+    actualizarDashboard();
+    cargarSalud();
+    cargarMotivos();
+    cargarDiario();
+    cargarLogros();
+}
+
+function obtenerConfiguracion() {
+    return JSON.parse(localStorage.getItem("configuracionLibreHumo"));
+}
+
+function actualizarElemento(id, valor) {
+    const el = document.getElementById(id);
+
+    if (el) {
+        el.textContent = valor;
+    }
+}
+
+// ======================================
+// CONFIGURACION
+// ======================================
 
 function guardarConfiguracion() {
 
@@ -55,68 +111,103 @@ function guardarConfiguracion() {
         anosFumando: parseInt(document.getElementById("anosFumando").value) || 0
     };
 
-    localStorage.setItem("configuracionLibreHumo", JSON.stringify(configuracion));
+    localStorage.setItem(
+        "configuracionLibreHumo",
+        JSON.stringify(configuracion)
+    );
 
     comprobarConfiguracion();
-    actualizarDashboard();
-}
-
-function obtenerConfiguracion() {
-    return JSON.parse(localStorage.getItem("configuracionLibreHumo"));
+    cargarTodo();
 }
 
 function comprobarConfiguracion() {
 
     const config = obtenerConfiguracion();
 
-    const pantallaConfig = document.getElementById("pantalla-configuracion");
-    const pantallaInicio = document.getElementById("pantalla-inicio");
+    const configScreen =
+        document.getElementById("pantalla-configuracion");
+
+    const inicioScreen =
+        document.getElementById("pantalla-inicio");
 
     if (!config || !config.fechaAbandono) {
-        pantallaConfig.classList.remove("oculto");
-        pantallaInicio.classList.add("oculto");
+
+        configScreen.classList.remove("oculto");
+        inicioScreen.classList.add("oculto");
+
     } else {
-        pantallaConfig.classList.add("oculto");
-        pantallaInicio.classList.remove("oculto");
+
+        configScreen.classList.add("oculto");
+        inicioScreen.classList.remove("oculto");
     }
 }
 
-// =========================
-// NAVEGACIÓN
-// =========================
+// ======================================
+// NAVEGACION
+// ======================================
 
 function mostrarPantalla(nombre) {
 
-    document.querySelectorAll(".pantalla").forEach(p => {
+    const pantallas =
+        document.querySelectorAll(".pantalla");
+
+    pantallas.forEach(p => {
         p.classList.add("oculto");
     });
 
-    const pantalla = document.getElementById(`pantalla-${nombre}`);
+    const destino =
+        document.getElementById(`pantalla-${nombre}`);
 
-    if (pantalla) {
-        pantalla.classList.remove("oculto");
+    if (destino) {
+        destino.classList.remove("oculto");
     }
 
     actualizarDashboard();
 }
 
-// =========================
-// DASHBOARD
-// =========================
+// ======================================
+// TIEMPO SIN FUMAR
+// ======================================
 
-function calcularDiasSinFumar() {
+function obtenerTiempoSinFumar() {
 
     const config = obtenerConfiguracion();
 
-    if (!config || !config.fechaAbandono) return 0;
+    if (!config || !config.fechaAbandono) {
+        return null;
+    }
 
     const inicio = new Date(config.fechaAbandono);
     const ahora = new Date();
 
     const diferencia = ahora - inicio;
 
-    return Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    const dias =
+        Math.floor(diferencia / (1000 * 60 * 60 * 24));
+
+    const horas =
+        Math.floor(
+            (diferencia % (1000 * 60 * 60 * 24))
+            / (1000 * 60 * 60)
+        );
+
+    const minutos =
+        Math.floor(
+            (diferencia % (1000 * 60 * 60))
+            / (1000 * 60)
+        );
+
+    return {
+        dias,
+        horas,
+        minutos,
+        milisegundos: diferencia
+    };
 }
+
+// ======================================
+// DASHBOARD
+// ======================================
 
 function actualizarDashboard() {
 
@@ -124,67 +215,99 @@ function actualizarDashboard() {
 
     if (!config) return;
 
-    const dias = calcularDiasSinFumar();
+    const tiempo = obtenerTiempoSinFumar();
+
+    if (!tiempo) return;
+
+    const dias = tiempo.dias;
 
     const cigarrillosEvitados =
         dias * config.cigarrillosDia;
 
     const dinero =
-        (cigarrillosEvitados / config.cigarrillosCajetilla) *
-        config.precioCajetilla;
+        (cigarrillosEvitados /
+            config.cigarrillosCajetilla)
+        * config.precioCajetilla;
 
     const salud =
-        Math.min(Math.round((dias / 365) * 100), 100);
+        Math.min(
+            Math.round((dias / 365) * 100),
+            100
+        );
 
-    actualizarElemento("diasSinFumar", `${dias} días`);
-    actualizarElemento("cigarrillosEvitados", cigarrillosEvitados);
-    actualizarElemento("dineroAhorrado", `${dinero.toFixed(2)} €`);
-    actualizarElemento("saludRecuperada", `${salud}%`);
+    actualizarElemento(
+        "diasSinFumar",
+        `${dias}d ${tiempo.horas}h ${tiempo.minutos}m`
+    );
 
-    mostrarProximoLogro(dias);
+    actualizarElemento(
+        "cigarrillosEvitados",
+        cigarrillosEvitados
+    );
+
+    actualizarElemento(
+        "dineroAhorrado",
+        `${dinero.toFixed(2)} €`
+    );
+
+    actualizarElemento(
+        "saludRecuperada",
+        `${salud}%`
+    );
+
+    actualizarProximoLogro(dias);
 }
 
-function actualizarElemento(id, valor) {
+function actualizarProximoLogro(diasActuales) {
 
-    const elemento = document.getElementById(id);
+    const siguiente =
+        LOGROS.find(
+            logro => diasActuales < logro.dias
+        );
 
-    if (elemento) {
-        elemento.textContent = valor;
-    }
-}
+    const el =
+        document.getElementById("proximoLogro");
 
-function mostrarProximoLogro(diasActuales) {
+    if (!el) return;
 
-    const logro = LOGROS.find(l => diasActuales < l.dias);
+    if (siguiente) {
 
-    const elemento = document.getElementById("proximoLogro");
+        const porcentaje =
+            Math.round(
+                (diasActuales / siguiente.dias) * 100
+            );
 
-    if (!elemento) return;
+        el.textContent =
+            `${siguiente.nombre} (${porcentaje}%)`;
 
-    if (logro) {
-        elemento.textContent = `${logro.nombre} (${logro.dias} días)`;
     } else {
-        elemento.textContent = "💎 Leyenda sin humo";
+
+        el.textContent =
+            "💎 Leyenda sin humo";
     }
 }
 
-// =========================
+// ======================================
 // SALUD
-// =========================
+// ======================================
 
 function cargarSalud() {
 
-    const lista = document.getElementById("listaSalud");
+    const lista =
+        document.getElementById("listaSalud");
 
     if (!lista) return;
 
-    const dias = calcularDiasSinFumar();
-
     lista.innerHTML = "";
+
+    const tiempo = obtenerTiempoSinFumar();
+
+    const dias = tiempo ? tiempo.dias : 0;
 
     HITOS_SALUD.forEach(hito => {
 
-        const conseguido = dias >= hito.dias;
+        const conseguido =
+            dias >= hito.dias;
 
         lista.innerHTML += `
             <div class="timeline-item ${conseguido ? "completado" : "pendiente"}">
@@ -195,112 +318,154 @@ function cargarSalud() {
     });
 }
 
-// =========================
+// ======================================
 // MOTIVOS
-// =========================
+// ======================================
 
 function obtenerMotivos() {
-    return JSON.parse(localStorage.getItem("motivos")) || [];
+    return JSON.parse(
+        localStorage.getItem("motivos")
+    ) || [];
 }
 
 function agregarMotivo() {
 
-    const textarea = document.getElementById("nuevoMotivo");
+    const input =
+        document.getElementById("nuevoMotivo");
 
-    const texto = textarea.value.trim();
+    const texto =
+        input.value.trim();
 
     if (!texto) return;
 
-    const motivos = obtenerMotivos();
+    const motivos =
+        obtenerMotivos();
 
     motivos.push(texto);
 
-    localStorage.setItem("motivos", JSON.stringify(motivos));
+    localStorage.setItem(
+        "motivos",
+        JSON.stringify(motivos)
+    );
 
-    textarea.value = "";
+    input.value = "";
 
     cargarMotivos();
 }
 
 function cargarMotivos() {
 
-    const contenedor = document.getElementById("listaMotivos");
+    const lista =
+        document.getElementById("listaMotivos");
 
-    if (!contenedor) return;
+    if (!lista) return;
 
-    const motivos = obtenerMotivos();
-
-    contenedor.innerHTML = motivos
-        .map(m =>
-            `<div class="motivo"><strong>💪</strong> ${m}</div>`
-        )
+    lista.innerHTML =
+        obtenerMotivos()
+        .map(m => `
+            <div class="motivo">
+                💪 ${m}
+            </div>
+        `)
         .join("");
 }
 
-// =========================
+// ======================================
 // DIARIO
-// =========================
+// ======================================
 
 function obtenerDiario() {
-    return JSON.parse(localStorage.getItem("diario")) || [];
+    return JSON.parse(
+        localStorage.getItem("diario")
+    ) || [];
 }
 
 function guardarEntradaDiario() {
 
     const entrada = {
         fecha: new Date().toLocaleString(),
-        nivel: document.getElementById("nivelAnsiedad").value,
-        situacion: document.getElementById("situacion").value,
-        comentario: document.getElementById("comentario").value
+        nivel:
+            document.getElementById(
+                "nivelAnsiedad"
+            ).value,
+        situacion:
+            document.getElementById(
+                "situacion"
+            ).value,
+        comentario:
+            document.getElementById(
+                "comentario"
+            ).value
     };
 
-    const diario = obtenerDiario();
+    const diario =
+        obtenerDiario();
 
     diario.unshift(entrada);
 
-    localStorage.setItem("diario", JSON.stringify(diario));
+    localStorage.setItem(
+        "diario",
+        JSON.stringify(diario)
+    );
 
-    document.getElementById("situacion").value = "";
-    document.getElementById("comentario").value = "";
+    document.getElementById(
+        "situacion"
+    ).value = "";
+
+    document.getElementById(
+        "comentario"
+    ).value = "";
 
     cargarDiario();
 }
 
 function cargarDiario() {
 
-    const contenedor = document.getElementById("historialDiario");
+    const historial =
+        document.getElementById(
+            "historialDiario"
+        );
 
-    if (!contenedor) return;
+    if (!historial) return;
 
-    const diario = obtenerDiario();
-
-    contenedor.innerHTML = diario.map(item => `
-        <div class="registro">
-            <p><strong>📅</strong> ${item.fecha}</p>
-            <p><strong>🔥 Deseo:</strong> ${item.nivel}/10</p>
-            <p><strong>📍 Situación:</strong> ${item.situacion}</p>
-            <p><strong>📝</strong> ${item.comentario}</p>
-        </div>
-    `).join("");
+    historial.innerHTML =
+        obtenerDiario()
+        .map(item => `
+            <div class="registro">
+                <p><strong>📅</strong> ${item.fecha}</p>
+                <p><strong>🔥</strong> ${item.nivel}/10</p>
+                <p><strong>📍</strong> ${item.situacion}</p>
+                <p>${item.comentario}</p>
+            </div>
+        `)
+        .join("");
 }
 
-// =========================
+// ======================================
 // LOGROS
-// =========================
+// ======================================
 
 function cargarLogros() {
 
-    const lista = document.getElementById("listaLogros");
+    const lista =
+        document.getElementById(
+            "listaLogros"
+        );
 
     if (!lista) return;
 
-    const dias = calcularDiasSinFumar();
+    const tiempo =
+        obtenerTiempoSinFumar();
+
+    const dias =
+        tiempo ? tiempo.dias : 0;
 
     lista.innerHTML = "";
 
     LOGROS.forEach(logro => {
 
-        const conseguido = dias >= logro.dias;
+        const conseguido =
+            dias >= logro.dias;
 
         lista.innerHTML += `
             <div class="logro ${conseguido ? "conseguido" : "bloqueado"}">
@@ -310,83 +475,92 @@ function cargarLogros() {
     });
 }
 
-// =========================
+// ======================================
 // EMERGENCIA
-// =========================
+// ======================================
 
 function activarEmergencia() {
 
-    const dias = calcularDiasSinFumar();
+    const contenedor =
+        document.getElementById(
+            "emergenciaContenido"
+        );
 
-    const config = obtenerConfiguracion();
+    let segundos = 300;
 
-    let dinero = 0;
-    let cigarrillos = 0;
+    const frase =
+        FRASES[
+            Math.floor(
+                Math.random() * FRASES.length
+            )
+        ];
 
-    if (config) {
-
-        cigarrillos =
-            dias * config.cigarrillosDia;
-
-        dinero =
-            (cigarrillos / config.cigarrillosCajetilla) *
-            config.precioCajetilla;
-    }
-
-    const motivos = obtenerMotivos();
-
-    const razon =
-        motivos.length > 0
-            ? motivos[Math.floor(Math.random() * motivos.length)]
-            : "Tu salud merece este esfuerzo.";
-
-    document.getElementById("emergenciaContenido").innerHTML = `
+    contenedor.innerHTML = `
         <div class="card">
+            <h3>🚨 Mantente fuerte</h3>
 
-            <h3>Respira profundamente</h3>
-
-            <p class="mensaje-motivador">
-                Inhala 4 segundos<br>
-                Mantén 4 segundos<br>
-                Exhala 6 segundos
-            </p>
+            <p>${frase}</p>
 
             <br>
 
-            <h3>💪 Recuerda tu motivo</h3>
-
-            <p>${razon}</p>
-
-            <br>
-
-            <h3>📊 Tu progreso</h3>
-
-            <p>🚭 ${dias} días sin fumar</p>
-            <p>🚬 ${cigarrillos} cigarrillos evitados</p>
-            <p>💰 ${dinero.toFixed(2)} € ahorrados</p>
-
-            <br>
-
-            <h3>❤️ Aguanta 5 minutos</h3>
+            <h2 id="contadorEmergencia">
+                05:00
+            </h2>
 
             <p>
-                La mayoría de los deseos intensos de fumar
-                desaparecen en pocos minutos.
+                Respira:
+                4 segundos inspirar,
+                4 mantener,
+                6 exhalar.
             </p>
-
         </div>
     `;
+
+    const contador =
+        document.getElementById(
+            "contadorEmergencia"
+        );
+
+    const intervalo =
+        setInterval(() => {
+
+            segundos--;
+
+            const min =
+                String(
+                    Math.floor(segundos / 60)
+                ).padStart(2, "0");
+
+            const seg =
+                String(
+                    segundos % 60
+                ).padStart(2, "0");
+
+            contador.textContent =
+                `${min}:${seg}`;
+
+            if (segundos <= 0) {
+
+                clearInterval(intervalo);
+
+                contador.textContent =
+                    "✅ Superado";
+
+            }
+
+        }, 1000);
 }
 
-// =========================
+// ======================================
 // AJUSTES
-// =========================
+// ======================================
 
 function reiniciarDatos() {
 
-    const confirmar = confirm(
-        "¿Seguro que quieres borrar todos los datos?"
-    );
+    const confirmar =
+        confirm(
+            "¿Seguro que deseas borrar todos los datos?"
+        );
 
     if (!confirmar) return;
 
@@ -394,14 +568,3 @@ function reiniciarDatos() {
 
     location.reload();
 }
-
-// =========================
-// ACTUALIZACIONES AUTOMÁTICAS
-// =========================
-
-setInterval(() => {
-
-    actualizarDashboard();
-    cargarLogros();
-
-}, 60000);
