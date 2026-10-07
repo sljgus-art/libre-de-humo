@@ -261,29 +261,52 @@ function actualizarDashboard() {
 function actualizarProximoLogro(diasActuales) {
 
     const siguiente =
-        LOGROS.find(
-            logro => diasActuales < logro.dias
-        );
+        LOGROS.find(logro => diasActuales < logro.dias);
 
-    const el =
+    const texto =
         document.getElementById("proximoLogro");
 
-    if (!el) return;
+    const barra =
+        document.getElementById("barraLogro");
 
-    if (siguiente) {
+    if (!texto) return;
 
-        const porcentaje =
-            Math.round(
-                (diasActuales / siguiente.dias) * 100
-            );
+    if (!siguiente) {
 
-        el.textContent =
-            `${siguiente.nombre} (${porcentaje}%)`;
+        texto.textContent = "💎 Leyenda sin humo";
 
-    } else {
+        if (barra) {
+            barra.style.width = "100%";
+        }
 
-        el.textContent =
-            "💎 Leyenda sin humo";
+        return;
+    }
+
+    const logroAnterior =
+        [...LOGROS]
+            .reverse()
+            .find(logro => logro.dias <= diasActuales);
+
+    const inicio =
+        logroAnterior ? logroAnterior.dias : 0;
+
+    const recorrido =
+        siguiente.dias - inicio;
+
+    const progreso =
+        diasActuales - inicio;
+
+    const porcentaje =
+        Math.min(
+            Math.round((progreso / recorrido) * 100),
+            100
+        );
+
+    texto.textContent =
+        `${siguiente.nombre} • ${porcentaje}%`;
+
+    if (barra) {
+        barra.style.width = `${porcentaje}%`;
     }
 }
 
