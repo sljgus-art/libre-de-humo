@@ -37,7 +37,7 @@ self.addEventListener("activate", (event) => {
     self.clients.claim();
 });
 
-// Cache First
+// Estrategia Cache First
 self.addEventListener("fetch", (event) => {
 
     event.respondWith(
