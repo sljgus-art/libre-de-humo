@@ -1,0 +1,375 @@
+/* ==========================
+   RESET
+========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f172a;
+    color: #f8fafc;
+    min-height: 100vh;
+    padding-bottom: 90px;
+}
+
+/* ==========================
+   CABECERA
+========================== */
+
+.header {
+    background: #1e293b;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #334155;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header h1 {
+    font-size: 1.8rem;
+}
+
+/* ==========================
+   PANTALLAS
+========================== */
+
+.pantalla {
+    padding: 20px;
+}
+
+.oculto {
+    display: none;
+}
+
+/* ==========================
+   FORMULARIOS
+========================== */
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    background: #1e293b;
+    color: white;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ==========================
+   BOTONES
+========================== */
+
+button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #22c55e;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.btn-danger {
+    background: #ef4444;
+}
+
+.btn-emergencia {
+    background: #dc2626;
+    font-size: 20px;
+    padding: 18px;
+    margin-top: 20px;
+    animation: pulse 2s infinite;
+}
+
+/* ==========================
+   TARJETAS
+========================== */
+
+.card {
+    background: #1e293b;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    color: #cbd5e1;
+}
+
+.card p {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+/* ==========================
+   TARJETA PRINCIPAL
+========================== */
+
+.principal {
+    text-align: center;
+    background: linear-gradient(
+        135deg,
+        #16a34a,
+        #22c55e
+    );
+}
+
+.principal h2 {
+    margin-bottom: 10px;
+}
+
+#diasSinFumar {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* ==========================
+   GRID
+========================== */
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================
+   TIMELINE SALUD
+========================== */
+
+.timeline {
+    margin-top: 20px;
+}
+
+.timeline-item {
+    background: #1e293b;
+    border-left: 5px solid #22c55e;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+}
+
+.timeline-item.completado {
+    border-left-color: #22c55e;
+}
+
+.timeline-item.pendiente {
+    border-left-color: #64748b;
+}
+
+/* ==========================
+   MOTIVOS
+========================== */
+
+.motivo {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.motivo strong {
+    color: #22c55e;
+}
+
+/* ==========================
+   DIARIO
+========================== */
+
+.registro {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 10px;
+}
+
+.registro p {
+    margin-bottom: 5px;
+}
+
+/* ==========================
+   LOGROS
+========================== */
+
+.logro {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.logro.conseguido {
+    border: 2px solid #22c55e;
+}
+
+.logro.bloqueado {
+    opacity: 0.6;
+}
+
+/* ==========================
+   BARRAS DE PROGRESO
+========================== */
+
+.progress {
+    width: 100%;
+    height: 22px;
+    background: #334155;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #22c55e,
+        #16a34a
+    );
+    width: 0%;
+    transition: width 0.5s;
+}
+
+/* ==========================
+   ESTADÍSTICAS
+========================== */
+
+.estadistica {
+    text-align: center;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+.estadistica .numero {
+    font-size: 2rem;
+    color: #22c55e;
+    font-weight: bold;
+}
+
+/* ==========================
+   EMERGENCIA
+========================== */
+
+#emergenciaContenido {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.temporizador {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ef4444;
+    margin: 20px 0;
+}
+
+.mensaje-motivador {
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+
+/* ==========================
+   NAVEGACIÓN INFERIOR
+========================== */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    background: #1e293b;
+
+    display: flex;
+    justify-content: space-around;
+
+    padding: 10px;
+
+    border-top: 1px solid #334155;
+
+    z-index: 1000;
+}
+
+.bottom-nav button {
+    width: auto;
+    margin: 0;
+    background: transparent;
+    font-size: 24px;
+    padding: 10px;
+}
+
+/* ==========================
+   ANIMACIONES
+========================== */
+
+@keyframes pulse {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ==========================
+   SCROLLBAR
+========================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
