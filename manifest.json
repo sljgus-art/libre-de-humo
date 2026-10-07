@@ -9,6 +9,7 @@
   "theme_color": "#1e293b",
   "orientation": "portrait",
   "lang": "es",
+  "categories": ["health", "lifestyle"],
   "icons": [
     {
       "src": "icon-192.png",
