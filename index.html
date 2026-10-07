@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,10 @@
 
     <title>Libre de Humo</title>
 
-    <link rel="manifest"yle.css
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- CABECERA -->
@@ -20,19 +23,19 @@
     <section id="pantalla-configuracion" class="pantalla">
         <h2>Configuración Inicial</h2>
 
-        <label>Fecha en que dejaste de fumar</label>
+        <label for="fechaAbandono">Fecha en que dejaste de fumar</label>
         <input type="date" id="fechaAbandono">
 
-        <label>Cigarrillos al día</label>
+        <label for="cigarrillosDia">Cigarrillos al día</label>
         <input type="number" id="cigarrillosDia" min="1">
 
-        <label>Precio de una cajetilla (€)</label>
+        <label for="precioCajetilla">Precio de una cajetilla (€)</label>
         <input type="number" id="precioCajetilla" step="0.01">
 
-        <label>Cigarrillos por cajetilla</label>
+        <label for="cigarrillosCajetilla">Cigarrillos por cajetilla</label>
         <input type="number" id="cigarrillosCajetilla" value="20">
 
-        <label>Años fumando</label>
+        <label for="anosFumando">Años fumando</label>
         <input type="number" id="anosFumando">
 
         <button onclick="guardarConfiguracion()">
@@ -101,10 +104,8 @@
 
         <h2>💪 Mis Motivos</h2>
 
-        <textarea
-            id="nuevoMotivo"
-            placeholder="Escribe un motivo para dejar de fumar..."
-        ></textarea>
+        <textarea id="nuevoMotivo"
+            placeholder="Escribe un motivo para dejar de fumar..."></textarea>
 
         <button onclick="agregarMotivo()">
             Añadir Motivo
@@ -119,13 +120,13 @@
 
         <h2>📖 Diario</h2>
 
-        <label>Nivel de deseo (1-10)</label>
+        <label for="nivelAnsiedad">Nivel de deseo (1-10)</label>
         <input type="range" min="1" max="10" value="5" id="nivelAnsiedad">
 
-        <label>Situación</label>
+        <label for="situacion">Situación</label>
         <input type="text" id="situacion">
 
-        <label>Comentario</label>
+        <label for="comentario">Comentario</label>
         <textarea id="comentario"></textarea>
 
         <button onclick="guardarEntradaDiario()">
@@ -159,33 +160,32 @@
     <!-- MENÚ INFERIOR -->
     <nav class="bottom-nav">
 
-        <button onclick="mostrarPantalla('inicio')">
-            🏠
-        </button>
+        <button onclick="mostrarPantalla('inicio')">🏠</button>
 
-        <button onclick="mostrarPantalla('salud')">
-            ❤️
-        </button>
+        <button onclick="mostrarPantalla('salud')">❤️</button>
 
-        <button onclick="mostrarPantalla('emergencia')">
-            🚨
-        </button>
+        <button onclick="mostrarPantalla('emergencia')">🚨</button>
 
-        <button onclick="mostrarPantalla('motivos')">
-            💪
-        </button>
+        <button onclick="mostrarPantalla('motivos')">💪</button>
 
-        <button onclick="mostrarPantalla('diario')">
-            📖
-        </button>
+        <button onclick="mostrarPantalla('diario')">📖</button>
 
-        <button onclick="mostrarPantalla('logros')">
-            🏆
-        </button>
+        <button onclick="mostrarPantalla('logros')">🏆</button>
 
     </nav>
 
-    app.jsscript>
+    <script src="app.js"></script>
+
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("./service-worker.js")
+                    .then(() => console.log("Service Worker registrado"))
+                    .catch(error => console.error("Error al registrar SW:", error));
+            });
+        }
+    </script>
 
 </body>
+
 </html>
