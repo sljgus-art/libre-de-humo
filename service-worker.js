@@ -1,83 +1,38 @@
-const CACHE_NAME = "libre-de-humo-v1";
+const CACHE_NAME = "libre-de-humo-v2";
 
 const FILES_TO_CACHE = [
-    "./",
-    "./index.html",
-    "./style.css",
-    "./app.js",
-    "./manifest.json",
-    "./icon-192.png",
-    "./icon-512.png"
+  "./",
+  "./index.html",
+  "./style.css",
+  "./app.js"
 ];
 
-// Instalación
 self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(FILES_TO_CACHE))
+  );
 
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(FILES_TO_CACHE))
-    );
-
-    self.skipWaiting();
+  self.skipWaiting();
 });
 
-// Activación
 self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      )
+    )
+  );
 
-    event.waitUntil(
-        caches.keys().then(keys => {
-            return Promise.all(
-                keys
-                    .filter(key => key !== CACHE_NAME)
-                    .map(key => caches.delete(key))
-            );
-        })
-    );
-
-    self.clients.claim();
+  self.clients.claim();
 });
 
-// Estrategia Cache First
 self.addEventListener("fetch", (event) => {
-
-    event.respondWith(
-
-        caches.match(event.request)
-            .then(response => {
-
-                if (response) {
-                    return response;
-                }
-
-                return fetch(event.request)
-                    .then(networkResponse => {
-
-                        if (
-                            event.request.method === "GET" &&
-                            event.request.url.startsWith(self.location.origin)
-                        ) {
-
-                            caches.open(CACHE_NAME)
-                                .then(cache => {
-                                    cache.put(
-                                        event.request,
-                                        networkResponse.clone()
-                                    );
-                                });
-                        }
-
-                        return networkResponse;
-                    });
-
-            })
-            .catch(() => {
-
-                if (event.request.mode === "navigate") {
-                    return caches.match("./index.html");
-                }
-
-            })
-
-    );
-
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+  );
 });
