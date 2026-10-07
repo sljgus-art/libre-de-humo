@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1e293b">
+
+    <title>Libre de Humo</title>
+
+    <link rel="manifest"yle.css
+</head>
+<body>
+
+    <!-- CABECERA -->
+    <header class="header">
+        <h1>🚭 Libre de Humo</h1>
+    </header>
+
+    <!-- CONFIGURACIÓN INICIAL -->
+    <section id="pantalla-configuracion" class="pantalla">
+        <h2>Configuración Inicial</h2>
+
+        <label>Fecha en que dejaste de fumar</label>
+        <input type="date" id="fechaAbandono">
+
+        <label>Cigarrillos al día</label>
+        <input type="number" id="cigarrillosDia" min="1">
+
+        <label>Precio de una cajetilla (€)</label>
+        <input type="number" id="precioCajetilla" step="0.01">
+
+        <label>Cigarrillos por cajetilla</label>
+        <input type="number" id="cigarrillosCajetilla" value="20">
+
+        <label>Años fumando</label>
+        <input type="number" id="anosFumando">
+
+        <button onclick="guardarConfiguracion()">
+            Guardar y empezar
+        </button>
+    </section>
+
+    <!-- INICIO -->
+    <section id="pantalla-inicio" class="pantalla oculto">
+
+        <div class="card principal">
+            <h2>🚭 Tiempo sin fumar</h2>
+            <p id="diasSinFumar">0 días</p>
+        </div>
+
+        <div class="grid">
+
+            <div class="card">
+                <h3>🚬 Cigarrillos evitados</h3>
+                <p id="cigarrillosEvitados">0</p>
+            </div>
+
+            <div class="card">
+                <h3>💰 Dinero ahorrado</h3>
+                <p id="dineroAhorrado">0 €</p>
+            </div>
+
+            <div class="card">
+                <h3>❤️ Salud recuperada</h3>
+                <p id="saludRecuperada">0 %</p>
+            </div>
+
+            <div class="card">
+                <h3>🏆 Próximo logro</h3>
+                <p id="proximoLogro">1 día</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- SALUD -->
+    <section id="pantalla-salud" class="pantalla oculto">
+
+        <h2>❤️ Recuperación de Salud</h2>
+
+        <div id="listaSalud" class="timeline"></div>
+
+    </section>
+
+    <!-- EMERGENCIA -->
+    <section id="pantalla-emergencia" class="pantalla oculto">
+
+        <h2>🚨 Tengo ganas de fumar</h2>
+
+        <button class="btn-emergencia" onclick="activarEmergencia()">
+            NECESITO AYUDA
+        </button>
+
+        <div id="emergenciaContenido"></div>
+
+    </section>
+
+    <!-- MOTIVOS -->
+    <section id="pantalla-motivos" class="pantalla oculto">
+
+        <h2>💪 Mis Motivos</h2>
+
+        <textarea
+            id="nuevoMotivo"
+            placeholder="Escribe un motivo para dejar de fumar..."
+        ></textarea>
+
+        <button onclick="agregarMotivo()">
+            Añadir Motivo
+        </button>
+
+        <div id="listaMotivos"></div>
+
+    </section>
+
+    <!-- DIARIO -->
+    <section id="pantalla-diario" class="pantalla oculto">
+
+        <h2>📖 Diario</h2>
+
+        <label>Nivel de deseo (1-10)</label>
+        <input type="range" min="1" max="10" value="5" id="nivelAnsiedad">
+
+        <label>Situación</label>
+        <input type="text" id="situacion">
+
+        <label>Comentario</label>
+        <textarea id="comentario"></textarea>
+
+        <button onclick="guardarEntradaDiario()">
+            Guardar Registro
+        </button>
+
+        <div id="historialDiario"></div>
+
+    </section>
+
+    <!-- LOGROS -->
+    <section id="pantalla-logros" class="pantalla oculto">
+
+        <h2>🏆 Logros</h2>
+
+        <div id="listaLogros"></div>
+
+    </section>
+
+    <!-- AJUSTES -->
+    <section id="pantalla-ajustes" class="pantalla oculto">
+
+        <h2>⚙️ Ajustes</h2>
+
+        <button onclick="reiniciarDatos()" class="btn-danger">
+            Reiniciar Datos
+        </button>
+
+    </section>
+
+    <!-- MENÚ INFERIOR -->
+    <nav class="bottom-nav">
+
+        <button onclick="mostrarPantalla('inicio')">
+            🏠
+        </button>
+
+        <button onclick="mostrarPantalla('salud')">
+            ❤️
+        </button>
+
+        <button onclick="mostrarPantalla('emergencia')">
+            🚨
+        </button>
+
+        <button onclick="mostrarPantalla('motivos')">
+            💪
+        </button>
+
+        <button onclick="mostrarPantalla('diario')">
+            📖
+        </button>
+
+        <button onclick="mostrarPantalla('logros')">
+            🏆
+        </button>
+
+    </nav>
+
+    app.jsscript>
+
+</body>
+</html>
